@@ -12,15 +12,6 @@ class App extends Component {
     isPersonsVisible: false
   }
 
-  styleSheet = {
-    backgroundColor: "lightgrey",
-    font: "Courier",
-    padding: "3px",
-    width: "140px",
-    fontSize: "17px"
-  }
-
-
   togglePersonHandler = () => {
     const personsVisible = this.state.isPersonsVisible;
     this.setState({
@@ -61,6 +52,15 @@ class App extends Component {
 
   render() {
     let personsContainer = null;
+    let styleSheet = {
+      backgroundColor: "green",
+      color: "white",
+      font: "Courier",
+      padding: "3px",
+      width: "140px",
+      fontSize: "17px"
+    }
+
     if (this.state.isPersonsVisible) {
       personsContainer =
         (<div>
@@ -79,11 +79,13 @@ class App extends Component {
             })
           }
         </div>)
+        styleSheet.backgroundColor = "red";
+        
     }
     return (
       <div className="App">
         <h4>React</h4>
-        <button style={this.styleSheet} onClick={this.togglePersonHandler}>Click</button>
+        <button style={styleSheet} onClick={this.togglePersonHandler}>Click</button>
         {personsContainer}
       </div>
     );
