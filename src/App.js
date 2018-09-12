@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
-import Person from './Person/Person'
+import Person from './Person/Person';
+import Radium, { StyleRoot } from 'radium';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
     persons: [
-      { id:'as22', name: 'Gunter', age: 22 },
-      { id:'as1112', name: 'Max', age: 21 },
-      { id:'as6546', name: 'Agi', age: 25 }
+      { id: 'as22', name: 'Gunter', age: 22 },
+      { id: 'as1112', name: 'Max', age: 21 },
+      { id: 'as6546', name: 'Agi', age: 25 }
     ],
     isPersonsVisible: false
   }
@@ -46,8 +48,8 @@ class App extends Component {
 
     persons[personIndex] = personCopy;
     //this.setState({ persons : persons  })
-    this.setState({ persons  });
-    
+    this.setState({ persons });
+
   }
 
   render() {
@@ -58,7 +60,11 @@ class App extends Component {
       font: "Courier",
       padding: "3px",
       width: "140px",
-      fontSize: "17px"
+      fontSize: "17px",
+      ":hover": {
+        backgroundColor: "lightgreen",
+        color: "black"
+      }
     }
 
     if (this.state.isPersonsVisible) {
@@ -67,30 +73,47 @@ class App extends Component {
           {
             this.state.persons.map((person, index) => {
               return (
-                <Person 
-                name = {person.name}
-                age = {person.age}
-                click = {() => {
-                  this.deletePersonHandler(person, index);
-                }}
-                key = {person.id}
-                changed = {(event) => this.changeNameHandler(event, person.id)}/>
+                <Person
+                  name={person.name}
+                  age={person.age}
+                  click={() => {
+                    this.deletePersonHandler(person, index);
+                  }}
+                  key={person.id}
+                  changed={(event) => this.changeNameHandler(event, person.id)} />
               )
             })
           }
         </div>)
-        styleSheet.backgroundColor = "red";
-        
+      styleSheet.backgroundColor = "red";
+      styleSheet[':hover'] = {
+        backgroundColor: "salmon",
+        color: "black"
+      }
+
+    }
+
+    const classes = [];
+    if (this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold');
     }
     return (
-      <div className="App">
-        <h4>React</h4>
-        <button style={styleSheet} onClick={this.togglePersonHandler}>Click</button>
-        {personsContainer}
-      </div>
+      <StyleRoot>
+        <ErrorBoundary>
+        <div className="App">
+          <h4>React</h4>
+          <p className={classes.join(' ')}>This is great</p>
+          <button style={styleSheet} onClick={this.togglePersonHandler}>Click</button>
+          {personsContainer}
+        </div>
+        </ErrorBoundary>
+      </StyleRoot>
     );
 
   }
 }
 
-export default App;
+export default (App);
